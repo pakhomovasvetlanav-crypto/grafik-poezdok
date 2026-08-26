@@ -93,6 +93,13 @@
 
     .history-head { display: flex; align-items: end; justify-content: space-between; gap: 12px; margin-bottom: 17px; }
     .filter { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; color: var(--ink); background: var(--paper); font-family: ui-sans-serif, system-ui, sans-serif; font-size: 13px; }
+    .planner-panel-head { align-items: center; }
+    .date-nav { display: flex; align-items: center; gap: 7px; }
+    .date-nav-button { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); background: var(--paper); font-family: ui-sans-serif, system-ui, sans-serif; font-size: 20px; cursor: pointer; }
+    .date-nav-button:hover { border-color: var(--violet); color: var(--violet); }
+    .date-picker { width: 146px; min-height: 36px; border: 1px solid var(--line); border-radius: 10px; padding: 7px 9px; color: var(--ink); background: var(--paper); font-family: ui-sans-serif, system-ui, sans-serif; font-size: 13px; }
+    .planner-summary { margin: -5px 0 16px; }
+    .planner-empty { padding: 22px 14px; border: 1px dashed #B9C8BC; border-radius: 14px; color: var(--muted); background: #FCFDFB; font-family: ui-sans-serif, system-ui, sans-serif; text-align: center; }
     .history-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 13px; }
     .history-item { padding: 15px; min-height: 132px; border: 1px solid #E5EAE3; border-radius: 16px; background: #FCFDFB; }
     .history-item .time { color: var(--muted); font-family: ui-sans-serif, system-ui, sans-serif; font-size: 12px; }
@@ -127,6 +134,7 @@
       .tabs { width: 100%; margin-bottom: 19px; } .tab { flex: 1; padding: 9px 12px; font-size: 12px; } .intro { padding-top: 4px; } h1 { letter-spacing: -1.2px; } .grid-2, .task-columns { grid-template-columns: 1fr; gap: 14px; } .panel-inner, .task-driver { padding: 16px; } .history-grid { grid-template-columns: 1fr; }
       .status-card { min-height: 110px; padding: 16px; } .status-card strong { font-size: 19px; } .status-ring { flex-basis: 58px; width: 58px; height: 58px; border-width: 7px; }
       .tasks-header { display: block; } .tasks-header .actions { margin-top: 13px; } .archive-box { align-items: flex-start; flex-direction: column; }
+      .planner-panel-head { display: block; } .date-nav { width: 100%; margin-top: 13px; } .date-picker { flex: 1; width: auto; } .date-nav-button { flex: 0 0 36px; }
     }
   </style>
 </head>
@@ -181,14 +189,10 @@
     </section>
 
     <section class="view" id="planner">
-      <div class="intro"><div class="eyebrow">Общий календарь</div><h1>План поездок<br>на сегодня.</h1><p>Все поездки вносятся и обновляются через EGGHEADS. Здесь отображается актуальный план обоих водителей.</p></div>
-      <article class="panel" style="margin-top:17px"><div class="panel-inner"><div class="panel-head"><div><div class="eyebrow">Текущий день</div><h2>Запланированные поездки</h2></div><span class="badge ok">Синхронизировано</span></div>
-        <div class="ride-list" id="plannedList">
-          <div class="ride-row"><div class="ride-icon">✓</div><div><div class="ride-name">Поездка 0 · Тверская → Офис</div><div class="ride-meta">08:15–09:00 · выполнена</div></div><div class="driver-tag"><span class="driver-dot purple"></span>Мирлан</div></div>
-          <div class="ride-row"><div class="ride-icon">↗</div><div><div class="ride-name">Поездка 1 · Центр → Аэропорт</div><div class="ride-meta">09:30–11:00 · в пути</div></div><div class="driver-tag"><span class="driver-dot"></span>Александр</div></div>
-          <div class="ride-row mirlan"><div class="ride-icon">↗</div><div><div class="ride-name">Поездка 2 · Склад → Кунцево</div><div class="ride-meta">10:00–11:30 · в пути</div></div><div class="driver-tag"><span class="driver-dot purple"></span>Мирлан</div></div>
-          <div class="ride-row"><div class="ride-icon">◷</div><div><div class="ride-name">Поездка 3 · Офис → Химки</div><div class="ride-meta">12:15–13:30 · запланирована</div></div><div class="driver-tag"><span class="driver-dot"></span>Александр</div></div>
-        </div>
+      <div class="intro"><div class="eyebrow">Общий календарь</div><h1>План поездок<br>на выбранную дату.</h1><p>Все поездки вносятся и обновляются через EGGHEADS. Здесь отображается актуальный план обоих водителей.</p></div>
+      <article class="panel" style="margin-top:17px"><div class="panel-inner"><div class="panel-head planner-panel-head"><div><div class="eyebrow">Дата плана</div><h2>Запланированные поездки</h2></div><div class="date-nav" aria-label="Навигация по датам"><button class="date-nav-button" id="prevPlanDate" type="button" aria-label="Предыдущая дата">‹</button><input class="date-picker" id="planDate" type="date" aria-label="Дата плана поездок"><button class="date-nav-button" id="nextPlanDate" type="button" aria-label="Следующая дата">›</button></div></div>
+        <p id="plannerSummary" class="muted planner-summary"></p>
+        <div class="ride-list" id="plannedList"></div>
         <p class="text-small" style="margin:18px 0 0">Чтобы добавить или изменить поездку, сообщите данные сотруднику EGGHEADS.</p>
       </div></article>
     </section>
@@ -224,6 +228,6 @@
     document.getElementById('taskPeriod').addEventListener('change', event => showToast('Показан период: ' + event.target.options[event.target.selectedIndex].text + '.'));
     document.getElementById('todayDate').textContent = new Intl.DateTimeFormat('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date()).replace(/^./, letter => letter.toUpperCase());
   </script>
-  <script src="app.js?v=20260826-0746"></script>
+  <script src="app.js?v=20260826-0915"></script>
 </body>
 </html>
