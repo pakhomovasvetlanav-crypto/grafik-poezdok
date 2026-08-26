@@ -52,7 +52,7 @@
       const content = nextPanel.querySelector(".panel-inner");
       content.innerHTML = `<div class="panel-head"><div><div class="eyebrow">Ближайший выезд</div><h2>Следующая поездка</h2></div><span class="badge next">${next ? next.start : "нет поездок"}</span></div>
         ${next ? renderRideRow(next, drivers[next.driverId], "◷") : `<p class="text-small">Запланированных поездок нет.</p>`}
-        <div class="actions" style="margin-top:16px"><button class="button secondary" onclick="switchView('planner')">Открыть план</button><button class="button" onclick="showToast('Для изменения поездки сообщите сотруднику EGGHEADS.')">Изменить через EGGHEADS</button></div>`;
+        <p class="text-small" style="margin:16px 0 0">Чтобы изменить поездку, сообщите данные сотруднику EGGHEADS.</p>`;
     }
 
     if (plannedList) plannedList.innerHTML = rides.sort((a, b) => a.start.localeCompare(b.start)).map((ride) => renderRideRow(ride, drivers[ride.driverId], ride.status === "completed" ? "✓" : ride.status === "planned" ? "◷" : "↗")).join("");
