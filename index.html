@@ -103,13 +103,7 @@
     .button.secondary { border: 1px solid var(--line); background: var(--paper); color: var(--ink); } .button.secondary:hover { background: #F3F6F1; }
     .actions { display: flex; flex-wrap: wrap; gap: 9px; }
 
-    .planner-layout { display: grid; grid-template-columns: minmax(0, 1fr) 350px; gap: 20px; }
-    .form-panel { position: sticky; top: 15px; height: max-content; }
     .field { display: grid; gap: 6px; margin-bottom: 13px; }
-    label { color: var(--muted); font-family: ui-sans-serif, system-ui, sans-serif; font-size: 12px; font-weight: 650; }
-    input, select { width: 100%; min-height: 41px; border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; color: var(--ink); background: white; font-family: ui-sans-serif, system-ui, sans-serif; font-size: 14px; }
-    input:focus, select:focus { outline: 3px solid rgba(117,105,182,.18); border-color: var(--violet); }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .toast { display: none; position: fixed; z-index: 3; right: 22px; bottom: 22px; max-width: 330px; padding: 13px 16px; border-radius: 12px; color: white; background: var(--ink); box-shadow: var(--shadow); font-family: ui-sans-serif, system-ui, sans-serif; font-size: 13px; }
     .toast.show { display: block; animation: lift .2s ease-out; } @keyframes lift { from { transform: translateY(8px); opacity: 0; } }
 
@@ -126,7 +120,7 @@
     .archive-box { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-top: 20px; padding: 18px 20px; border: 1px dashed #B9C8BC; border-radius: 16px; background: rgba(255,255,255,.5); }
     .archive-box strong { display: block; margin-bottom: 3px; }
 
-    @media (max-width: 920px) { .hero, .planner-layout { grid-template-columns: 1fr; } .form-panel { position: static; } .history-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 920px) { .hero { grid-template-columns: 1fr; } .history-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 620px) {
       .app { padding: 18px 15px 32px; } .topbar { align-items: flex-start; margin-bottom: 18px; } .header-right { flex-direction: column; align-items: flex-end; gap: 7px; } .date-pill { padding: 7px 10px; font-size: 11px; }
       .brand-title { font-size: 18px; } .brand-subtitle { font-size: 10px; } .brand-mark { width: 38px; height: 38px; border-radius: 13px; }
@@ -145,7 +139,6 @@
 
     <nav class="tabs" aria-label="Разделы">
       <button class="tab active" data-view="dashboard">Сегодня</button>
-      <button class="tab" data-view="planner">План поездок</button>
       <button class="tab" data-view="tasks">Задачи водителей</button>
     </nav>
 
@@ -164,7 +157,7 @@
         </div></article>
         <article class="panel" id="nextRidePanel"><div class="panel-inner"><div class="panel-head"><div><div class="eyebrow">Ближайший выезд</div><h2>Следующая поездка</h2></div><span class="badge next">через 45 минут</span></div>
           <div class="ride-row"><div class="ride-icon">◷</div><div><div class="ride-name">Поездка 3 · Офис → Химки</div><div class="ride-meta">12:15–13:30 · забор документов</div></div><div class="driver-tag"><span class="driver-dot"></span>Александр</div></div>
-          <div class="actions" style="margin-top:16px"><button class="button secondary" onclick="switchView('planner')">Открыть план</button><button class="button" onclick="showToast('Напоминание по поездке 3 запланировано.')">Напомнить</button></div>
+          <p class="text-small" style="margin:16px 0 0">Изменения по поездке вносит сотрудник EGGHEADS.</p>
         </div></article>
       </div>
 
@@ -183,36 +176,17 @@
           <div class="history-item"><span class="time">10:00–11:30</span><strong>Поездка 2</strong><span class="driver-line"><span class="driver-dot purple"></span>Мирлан · в пути</span></div>
           <div class="history-item"><span class="time">12:15–13:30</span><strong>Поездка 3</strong><span class="driver-line"><span class="driver-dot"></span>Александр · запланирована</span></div>
         </div>
-        <div class="actions" style="margin-top:18px"><button class="button secondary" onclick="archiveRides()">Сохранить день в архив</button><button class="button" onclick="switchView('planner')">+ Добавить поездку</button></div>
+        <p class="text-small" style="margin:18px 0 0">Новые поездки и архивирование добавляются через EGGHEADS.</p>
       </div></article>
     </section>
 
-    <section class="view" id="planner">
-      <div class="planner-layout">
-        <div><div class="intro"><div class="eyebrow">Общий календарь</div><h1>План поездок<br>на сегодня.</h1><p>Внесите маршрут — он появится в истории и на общем графике. При совпадении времени система отметит пересечение.</p></div>
-          <article class="panel" style="margin-top:17px"><div class="panel-inner"><div class="panel-head"><div><div class="eyebrow">26 августа</div><h2>Запланировано 4 поездки</h2></div><span class="badge ok">Синхронизировано</span></div>
-            <div class="ride-list" id="plannedList">
-              <div class="ride-row"><div class="ride-icon">✓</div><div><div class="ride-name">Поездка 0 · Тверская → Офис</div><div class="ride-meta">08:15–09:00 · выполнена</div></div><div class="driver-tag"><span class="driver-dot purple"></span>Мирлан</div></div>
-              <div class="ride-row"><div class="ride-icon">↗</div><div><div class="ride-name">Поездка 1 · Центр → Аэропорт</div><div class="ride-meta">09:30–11:00 · в пути</div></div><div class="driver-tag"><span class="driver-dot"></span>Александр</div></div>
-              <div class="ride-row mirlan"><div class="ride-icon">↗</div><div><div class="ride-name">Поездка 2 · Склад → Кунцево</div><div class="ride-meta">10:00–11:30 · в пути</div></div><div class="driver-tag"><span class="driver-dot purple"></span>Мирлан</div></div>
-              <div class="ride-row"><div class="ride-icon">◷</div><div><div class="ride-name">Поездка 3 · Офис → Химки</div><div class="ride-meta">12:15–13:30 · запланирована</div></div><div class="driver-tag"><span class="driver-dot"></span>Александр</div></div>
-            </div>
-          </div></article>
-        </div>
-        <aside class="panel form-panel"><div class="panel-inner"><div class="eyebrow">Новая запись</div><h2 style="margin-bottom:18px">Добавить поездку</h2>
-          <form id="rideForm"><div class="field"><label for="rideDriver">Водитель</label><select id="rideDriver" required><option>Александр</option><option>Мирлан</option></select></div><div class="field"><label for="rideTitle">Маршрут или название</label><input id="rideTitle" required placeholder="Например: Офис → ВДНХ"></div><div class="form-grid"><div class="field"><label for="rideStart">Начало</label><input id="rideStart" type="time" required value="14:00"></div><div class="field"><label for="rideEnd">Окончание</label><input id="rideEnd" type="time" required value="15:00"></div></div><div class="field"><label for="rideStatus">Статус</label><select id="rideStatus"><option>Запланирована</option><option>В пути</option><option>Выполнена</option></select></div><button class="button" style="width:100%" type="submit">Сохранить поездку</button></form>
-          <p class="text-small" style="margin:13px 0 0">Обновления вносит сотрудник EGGHEADS: данные сохраняются в общем реестре и публикуются на дашборде.</p>
-        </div></aside>
-      </div>
-    </section>
-
     <section class="view" id="tasks">
-      <div class="tasks-header"><div><div class="eyebrow">Ежедневный чек-лист</div><h1>Задачи водителей</h1><p class="intro" style="padding:0;max-width:620px">Ведите отдельные задачи, отмечайте выполнение и возвращайтесь к ним за неделю, месяц или из архива.</p></div><div class="actions"><select class="filter" id="taskPeriod" aria-label="Период задач"><option value="today">Сегодня</option><option value="week">Последняя неделя</option><option value="month">Последний месяц</option><option value="archive">Архив</option></select><button class="button" onclick="document.getElementById('taskName').focus()">+ Новая задача</button></div></div>
+      <div class="tasks-header"><div><div class="eyebrow">Ежедневный чек-лист</div><h1>Задачи водителей</h1><p class="intro" style="padding:0;max-width:620px">Список задач обновляется через EGGHEADS. Здесь можно просмотреть текущие задачи и архив за выбранный период.</p></div><div class="actions"><select class="filter" id="taskPeriod" aria-label="Период задач"><option value="today">Сегодня</option><option value="week">Последняя неделя</option><option value="month">Последний месяц</option><option value="archive">Архив</option></select></div></div>
       <div class="task-columns">
         <article class="task-driver"><div class="task-driver-head"><span class="avatar alex">А</span><div><h2>Александр</h2><div class="text-small">2 из 3 выполнено</div></div></div><div id="alexTasks"><div class="task-card"><input class="check" type="checkbox" checked aria-label="Задача выполнена"><div><div class="task-name">Проверить уровень топлива</div><div class="task-meta">до 09:00 · выполнено</div></div></div><div class="task-card"><input class="check" type="checkbox" checked aria-label="Задача выполнена"><div><div class="task-name">Забрать документы в офисе</div><div class="task-meta">до 12:00 · выполнено</div></div></div><div class="task-card"><input class="check" type="checkbox" aria-label="Задача выполнена"><div><div class="task-name">Подтвердить поездку 3</div><div class="task-meta">до 12:00 · в работе</div></div></div></div></article>
         <article class="task-driver"><div class="task-driver-head"><span class="avatar mirlan">М</span><div><h2>Мирлан</h2><div class="text-small">1 из 3 выполнено</div></div></div><div id="mirlanTasks"><div class="task-card"><input class="check" type="checkbox" checked aria-label="Задача выполнена"><div><div class="task-name">Осмотр автомобиля</div><div class="task-meta">до 09:00 · выполнено</div></div></div><div class="task-card"><input class="check" type="checkbox" aria-label="Задача выполнена"><div><div class="task-name">Передать груз на складе</div><div class="task-meta">до 12:30 · в работе</div></div></div><div class="task-card"><input class="check" type="checkbox" aria-label="Задача выполнена"><div><div class="task-name">Проверить маршрут поездки 4</div><div class="task-meta">до 14:30 · запланировано</div></div></div></div></article>
       </div>
-      <div class="grid-2" style="margin-top:20px"><article class="panel"><div class="panel-inner"><div class="eyebrow">Добавить задачу</div><h2 style="margin-bottom:16px">Ежедневный список</h2><form id="taskForm"><div class="form-grid"><div class="field"><label for="taskDriver">Водитель</label><select id="taskDriver"><option>Александр</option><option>Мирлан</option></select></div><div class="field"><label for="taskTime">Срок</label><input id="taskTime" type="time" value="16:00"></div></div><div class="field"><label for="taskName">Задача</label><input id="taskName" required placeholder="Например: пополнить топливную карту"></div><button class="button" type="submit">Добавить в список</button></form></div></article><article class="panel"><div class="panel-inner"><div class="eyebrow">Сохранность данных</div><h2>Архив задач</h2><p class="text-small" style="font-size:14px;line-height:1.6;margin:12px 0 18px">По завершении дня задачи и поездки можно перенести в архив. Период выбирается в верхнем фильтре.</p><button class="button secondary" onclick="showToast('Архив задач за сегодня сохранён.')">Сохранить задачи в архив</button></div></article></div>
+      <article class="panel" style="margin-top:20px"><div class="panel-inner"><div class="eyebrow">Архив задач</div><h2>История сохраняется отдельно</h2><p class="text-small" style="font-size:14px;line-height:1.6;margin:12px 0 0">Поездки и задачи архивируются через EGGHEADS. Используйте фильтр выше, чтобы выбрать период просмотра.</p></div></article>
     </section>
   </main>
   <div class="toast" role="status" aria-live="polite" id="toast"></div>
@@ -234,46 +208,6 @@
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => toast.classList.remove('show'), 3200);
     }
-    function archiveRides() { showToast('История поездок за сегодня сохранена в архиве.'); }
-
-    document.getElementById('rideForm').addEventListener('submit', event => {
-      event.preventDefault();
-      const driver = document.getElementById('rideDriver').value;
-      const title = document.getElementById('rideTitle').value.trim();
-      const start = document.getElementById('rideStart').value;
-      const end = document.getElementById('rideEnd').value;
-      const status = document.getElementById('rideStatus').value.toLowerCase();
-      const purple = driver === 'Мирлан';
-      const row = document.createElement('div');
-      row.className = 'ride-row' + (purple ? ' mirlan' : '');
-      row.innerHTML = `<div class="ride-icon">◷</div><div><div class="ride-name">${escapeHtml(title)}</div><div class="ride-meta">${start}–${end} · ${status}</div></div><div class="driver-tag"><span class="driver-dot ${purple ? 'purple' : ''}"></span>${driver}</div>`;
-      document.getElementById('plannedList').appendChild(row);
-      const tile = document.createElement('div');
-      tile.className = 'history-item';
-      tile.innerHTML = `<span class="time">${start}–${end}</span><strong>${escapeHtml(title)}</strong><span class="driver-line"><span class="driver-dot ${purple ? 'purple' : ''}"></span>${driver} · ${status}</span>`;
-      document.getElementById('historyGrid').appendChild(tile);
-      localStorage.setItem('tripDashboardLastRide', JSON.stringify({ driver, title, start, end, status }));
-      event.target.reset();
-      document.getElementById('rideStart').value = '14:00'; document.getElementById('rideEnd').value = '15:00';
-      showToast('Поездка добавлена в общий график.');
-    });
-
-    document.getElementById('taskForm').addEventListener('submit', event => {
-      event.preventDefault();
-      const driver = document.getElementById('taskDriver').value;
-      const name = document.getElementById('taskName').value.trim();
-      const time = document.getElementById('taskTime').value;
-      const target = document.getElementById(driver === 'Александр' ? 'alexTasks' : 'mirlanTasks');
-      const task = document.createElement('div');
-      task.className = 'task-card';
-      task.innerHTML = `<input class="check" type="checkbox" aria-label="Задача выполнена"><div><div class="task-name">${escapeHtml(name)}</div><div class="task-meta">до ${time} · запланировано</div></div>`;
-      target.appendChild(task);
-      localStorage.setItem('tripDashboardLastTask', JSON.stringify({ driver, name, time }));
-      event.target.reset(); document.getElementById('taskTime').value = '16:00';
-      showToast('Задача добавлена для водителя ' + driver + '.');
-    });
-
-    function escapeHtml(value) { const element = document.createElement('div'); element.textContent = value; return element.innerHTML; }
     document.getElementById('taskPeriod').addEventListener('change', event => showToast('Показан период: ' + event.target.options[event.target.selectedIndex].text + '.'));
     document.getElementById('todayDate').textContent = new Intl.DateTimeFormat('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date()).replace(/^./, letter => letter.toUpperCase());
   </script>
