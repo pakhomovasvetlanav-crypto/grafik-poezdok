@@ -83,7 +83,11 @@
     };
     if (!picker.dataset.bound) {
       picker.dataset.bound = "true";
-      picker.addEventListener("change", () => renderForDate(picker.value));
+      const updateSelectedDate = () => {
+        if (picker.value) renderForDate(picker.value);
+      };
+      picker.addEventListener("input", updateSelectedDate);
+      picker.addEventListener("change", updateSelectedDate);
       document.getElementById("prevPlanDate")?.addEventListener("click", () => {
         const date = new Date(`${picker.value}T12:00:00`); date.setDate(date.getDate() - 1); picker.value = isoDate(date); renderForDate(picker.value);
       });
