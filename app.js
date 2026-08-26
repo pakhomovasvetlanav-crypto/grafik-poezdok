@@ -67,8 +67,11 @@
   function renderTimeline(rides, drivers) {
     const content = document.getElementById("timelineContent");
     if (!content) return;
-    const dayStart = 8 * 60;
-    const dayEnd = 16 * 60;
+    const rideMinutes = rides.flatMap((ride) => [toMinutes(ride.start), toMinutes(ride.end)]);
+    const rawStart = rideMinutes.length ? Math.min(...rideMinutes) : 8 * 60;
+    const rawEnd = rideMinutes.length ? Math.max(...rideMinutes) : 16 * 60;
+    const dayStart = Math.floor(Math.max(0, rawStart - 30) / 60) * 60;
+    const dayEnd = Math.ceil(Math.min(24 * 60, rawEnd + 30) / 60) * 60;
     const span = dayEnd - dayStart;
     const overlaps = [];
     rides.forEach((ride, index) => rides.slice(index + 1).forEach((other) => {
@@ -77,7 +80,7 @@
       const end = Math.min(toMinutes(ride.end), toMinutes(other.end));
       if (start < end) overlaps.push({ start, end });
     }));
-    const hours = Array.from({ length: 8 }, (_, index) => `<span>${String(index + 8).padStart(2, "0")}:00</span>`).join("");
+    const hours = Array.from({ length: Math.max(1, Math.round((dayEnd - dayStart) / 60)) }, (_, index) => `<span>${String(Math.floor(dayStart / 60) + index).padStart(2, "0")}:00</span>`).join("");
     const lanes = Object.values(drivers).map((driver) => {
       const blocks = rides.filter((ride) => ride.driverId === driver.id).map((ride) => {
         const left = Math.max(0, ((toMinutes(ride.start) - dayStart) / span) * 100);
