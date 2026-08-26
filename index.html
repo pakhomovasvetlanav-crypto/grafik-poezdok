@@ -139,6 +139,7 @@
 
     <nav class="tabs" aria-label="Разделы">
       <button class="tab active" data-view="dashboard">Сегодня</button>
+      <button class="tab" data-view="planner">План поездок</button>
       <button class="tab" data-view="tasks">Задачи водителей</button>
     </nav>
 
@@ -177,6 +178,19 @@
           <div class="history-item"><span class="time">12:15–13:30</span><strong>Поездка 3</strong><span class="driver-line"><span class="driver-dot"></span>Александр · запланирована</span></div>
         </div>
         <p class="text-small" style="margin:18px 0 0">Новые поездки и архивирование добавляются через EGGHEADS.</p>
+      </div></article>
+    </section>
+
+    <section class="view" id="planner">
+      <div class="intro"><div class="eyebrow">Общий календарь</div><h1>План поездок<br>на сегодня.</h1><p>Все поездки вносятся и обновляются через EGGHEADS. Здесь отображается актуальный план обоих водителей.</p></div>
+      <article class="panel" style="margin-top:17px"><div class="panel-inner"><div class="panel-head"><div><div class="eyebrow">Текущий день</div><h2>Запланированные поездки</h2></div><span class="badge ok">Синхронизировано</span></div>
+        <div class="ride-list" id="plannedList">
+          <div class="ride-row"><div class="ride-icon">✓</div><div><div class="ride-name">Поездка 0 · Тверская → Офис</div><div class="ride-meta">08:15–09:00 · выполнена</div></div><div class="driver-tag"><span class="driver-dot purple"></span>Мирлан</div></div>
+          <div class="ride-row"><div class="ride-icon">↗</div><div><div class="ride-name">Поездка 1 · Центр → Аэропорт</div><div class="ride-meta">09:30–11:00 · в пути</div></div><div class="driver-tag"><span class="driver-dot"></span>Александр</div></div>
+          <div class="ride-row mirlan"><div class="ride-icon">↗</div><div><div class="ride-name">Поездка 2 · Склад → Кунцево</div><div class="ride-meta">10:00–11:30 · в пути</div></div><div class="driver-tag"><span class="driver-dot purple"></span>Мирлан</div></div>
+          <div class="ride-row"><div class="ride-icon">◷</div><div><div class="ride-name">Поездка 3 · Офис → Химки</div><div class="ride-meta">12:15–13:30 · запланирована</div></div><div class="driver-tag"><span class="driver-dot"></span>Александр</div></div>
+        </div>
+        <p class="text-small" style="margin:18px 0 0">Чтобы добавить или изменить поездку, сообщите данные сотруднику EGGHEADS.</p>
       </div></article>
     </section>
 
