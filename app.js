@@ -30,7 +30,9 @@
 
   function renderDashboard(data) {
     const drivers = Object.fromEntries(data.drivers.map((driver) => [driver.id, driver]));
-    const rides = data.rides.filter((ride) => ride.date === data.rides[0]?.date);
+    const now = new Date();
+    const dashboardDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    const rides = data.rides.filter((ride) => ride.date === dashboardDate);
     const active = rides.filter((ride) => ride.status === "in_progress");
     const upcoming = rides.filter((ride) => ride.status === "planned").sort((a, b) => a.start.localeCompare(b.start));
     const next = upcoming[0];
@@ -59,7 +61,7 @@
     }
 
     renderTimeline(rides, drivers);
-    renderTasks(data.tasks, data.rides[0]?.date, drivers);
+    renderTasks(data.tasks, dashboardDate, drivers);
   }
 
   function renderTimeline(rides, drivers) {
