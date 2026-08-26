@@ -162,14 +162,14 @@
             <div class="ride-row mirlan"><div class="ride-icon">↗</div><div><div class="ride-name">Поездка 2 · Склад → Кунцево</div><div class="ride-meta">10:00–11:30 · 18 км</div></div><div class="driver-tag"><span class="driver-dot purple"></span>Мирлан</div></div>
           </div>
         </div></article>
-        <article class="panel"><div class="panel-inner"><div class="panel-head"><div><div class="eyebrow">Ближайший выезд</div><h2>Следующая поездка</h2></div><span class="badge next">через 45 минут</span></div>
+        <article class="panel" id="nextRidePanel"><div class="panel-inner"><div class="panel-head"><div><div class="eyebrow">Ближайший выезд</div><h2>Следующая поездка</h2></div><span class="badge next">через 45 минут</span></div>
           <div class="ride-row"><div class="ride-icon">◷</div><div><div class="ride-name">Поездка 3 · Офис → Химки</div><div class="ride-meta">12:15–13:30 · забор документов</div></div><div class="driver-tag"><span class="driver-dot"></span>Александр</div></div>
           <div class="actions" style="margin-top:16px"><button class="button secondary" onclick="switchView('planner')">Открыть план</button><button class="button" onclick="showToast('Напоминание по поездке 3 запланировано.')">Напомнить</button></div>
         </div></article>
       </div>
 
       <article class="panel timeline-panel"><div class="panel-inner"><div class="panel-head"><div><div class="eyebrow">Визуальный график</div><h2>Занятость водителей</h2></div><span class="text-small">Сегодня · 08:00–16:00</span></div>
-        <div class="timeline-wrap"><div class="timeline"><div class="time-scale"><span></span><span>08:00</span><span>09:00</span><span>10:00</span><span>11:00</span><span>12:00</span><span>13:00</span><span>14:00</span><span>15:00</span></div>
+        <div class="timeline-wrap" id="timelineContent"><div class="timeline"><div class="time-scale"><span></span><span>08:00</span><span>09:00</span><span>10:00</span><span>11:00</span><span>12:00</span><span>13:00</span><span>14:00</span><span>15:00</span></div>
           <div class="driver-lane"><div class="lane-label"><span class="driver-dot"></span>Александр</div><div class="lane"><i class="overlap-band" style="left:25%;width:12.5%"></i><div class="ride-block alex-block" style="left:18.75%;width:18.75%">Поездка 1</div><div class="ride-block alex-block" style="left:53.1%;width:16.5%">Поездка 3</div></div></div>
           <div class="driver-lane"><div class="lane-label"><span class="driver-dot purple"></span>Мирлан</div><div class="lane"><i class="overlap-band" style="left:25%;width:12.5%"></i><div class="ride-block mirlan-block" style="left:25%;width:18.75%">Поездка 2</div><div class="ride-block mirlan-block" style="left:68.75%;width:18.75%">Поездка 4</div></div></div>
         </div></div>
@@ -201,7 +201,7 @@
         </div>
         <aside class="panel form-panel"><div class="panel-inner"><div class="eyebrow">Новая запись</div><h2 style="margin-bottom:18px">Добавить поездку</h2>
           <form id="rideForm"><div class="field"><label for="rideDriver">Водитель</label><select id="rideDriver" required><option>Александр</option><option>Мирлан</option></select></div><div class="field"><label for="rideTitle">Маршрут или название</label><input id="rideTitle" required placeholder="Например: Офис → ВДНХ"></div><div class="form-grid"><div class="field"><label for="rideStart">Начало</label><input id="rideStart" type="time" required value="14:00"></div><div class="field"><label for="rideEnd">Окончание</label><input id="rideEnd" type="time" required value="15:00"></div></div><div class="field"><label for="rideStatus">Статус</label><select id="rideStatus"><option>Запланирована</option><option>В пути</option><option>Выполнена</option></select></div><button class="button" style="width:100%" type="submit">Сохранить поездку</button></form>
-          <p class="text-small" style="margin:13px 0 0">Пример хранится локально в браузере. В рабочей версии его можно подключить к общей базе.</p>
+          <p class="text-small" style="margin:13px 0 0">Обновления вносит сотрудник EGGHEADS: данные сохраняются в общем реестре и публикуются на дашборде.</p>
         </div></aside>
       </div>
     </section>
@@ -277,5 +277,6 @@
     document.getElementById('taskPeriod').addEventListener('change', event => showToast('Показан период: ' + event.target.options[event.target.selectedIndex].text + '.'));
     document.getElementById('todayDate').textContent = new Intl.DateTimeFormat('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date()).replace(/^./, letter => letter.toUpperCase());
   </script>
+  <script src="app.js"></script>
 </body>
 </html>
