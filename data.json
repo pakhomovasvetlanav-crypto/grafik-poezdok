@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-08-26T07:20:00Z",
+  "updatedAt": "2026-08-26T08:30:00Z",
   "drivers": [
     { "id": "alexander", "name": "Александр", "color": "coral" },
     { "id": "mirlan", "name": "Мирлан", "color": "violet" }
@@ -60,6 +60,50 @@
       "end": "15:00",
       "status": "planned",
       "details": "возвращение"
+    },
+    {
+      "id": "ride-5",
+      "date": "2026-08-27",
+      "driverId": "alexander",
+      "title": "Поездка 5",
+      "route": "Офис → Мытищи",
+      "start": "09:00",
+      "end": "10:20",
+      "status": "planned",
+      "details": "встреча с клиентом"
+    },
+    {
+      "id": "ride-6",
+      "date": "2026-08-27",
+      "driverId": "mirlan",
+      "title": "Поездка 6",
+      "route": "Склад → Красногорск",
+      "start": "10:30",
+      "end": "12:00",
+      "status": "planned",
+      "details": "доставка оборудования"
+    },
+    {
+      "id": "ride-7",
+      "date": "2026-08-28",
+      "driverId": "mirlan",
+      "title": "Поездка 7",
+      "route": "Офис → Домодедово",
+      "start": "08:45",
+      "end": "10:15",
+      "status": "planned",
+      "details": "трансфер"
+    },
+    {
+      "id": "ride-8",
+      "date": "2026-08-28",
+      "driverId": "alexander",
+      "title": "Поездка 8",
+      "route": "Химки → Офис",
+      "start": "14:00",
+      "end": "15:10",
+      "status": "planned",
+      "details": "возврат документов"
     }
   ],
   "tasks": [
