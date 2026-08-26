@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-08-26T07:20:00Z",
+  "drivers": [
+    { "id": "alexander", "name": "Александр", "color": "coral" },
+    { "id": "mirlan", "name": "Мирлан", "color": "violet" }
+  ],
+  "rides": [
+    {
+      "id": "ride-0",
+      "date": "2026-08-26",
+      "driverId": "mirlan",
+      "title": "Поездка 0",
+      "route": "Тверская → Офис",
+      "start": "08:15",
+      "end": "09:00",
+      "status": "completed",
+      "details": "выполнена"
+    },
+    {
+      "id": "ride-1",
+      "date": "2026-08-26",
+      "driverId": "alexander",
+      "title": "Поездка 1",
+      "route": "Центр → Аэропорт",
+      "start": "09:30",
+      "end": "11:00",
+      "status": "in_progress",
+      "details": "24 км"
+    },
+    {
+      "id": "ride-2",
+      "date": "2026-08-26",
+      "driverId": "mirlan",
+      "title": "Поездка 2",
+      "route": "Склад → Кунцево",
+      "start": "10:00",
+      "end": "11:30",
+      "status": "in_progress",
+      "details": "18 км"
+    },
+    {
+      "id": "ride-3",
+      "date": "2026-08-26",
+      "driverId": "alexander",
+      "title": "Поездка 3",
+      "route": "Офис → Химки",
+      "start": "12:15",
+      "end": "13:30",
+      "status": "planned",
+      "details": "забор документов"
+    },
+    {
+      "id": "ride-4",
+      "date": "2026-08-26",
+      "driverId": "mirlan",
+      "title": "Поездка 4",
+      "route": "Кунцево → Офис",
+      "start": "13:30",
+      "end": "15:00",
+      "status": "planned",
+      "details": "возвращение"
+    }
+  ],
+  "tasks": [
+    { "id": "task-a1", "date": "2026-08-26", "driverId": "alexander", "title": "Проверить уровень топлива", "due": "09:00", "completed": true },
+    { "id": "task-a2", "date": "2026-08-26", "driverId": "alexander", "title": "Забрать документы в офисе", "due": "12:00", "completed": true },
+    { "id": "task-a3", "date": "2026-08-26", "driverId": "alexander", "title": "Подтвердить поездку 3", "due": "12:00", "completed": false },
+    { "id": "task-m1", "date": "2026-08-26", "driverId": "mirlan", "title": "Осмотр автомобиля", "due": "09:00", "completed": true },
+    { "id": "task-m2", "date": "2026-08-26", "driverId": "mirlan", "title": "Передать груз на складе", "due": "12:30", "completed": false },
+    { "id": "task-m3", "date": "2026-08-26", "driverId": "mirlan", "title": "Проверить маршрут поездки 4", "due": "14:30", "completed": false }
+  ]
+}
