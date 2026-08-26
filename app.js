@@ -19,6 +19,8 @@
   const driverDot = (driver) => `<span class="driver-dot ${driver.color === "violet" ? "purple" : ""}"></span>`;
   const driverTag = (driver) => `<div class="driver-tag">${driverDot(driver)}${escapeHtml(driver.name)}</div>`;
   const rideLabel = (ride) => `${escapeHtml(ride.title)} · ${escapeHtml(ride.route)}`;
+  const isoDate = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+  const formatDate = (value) => new Intl.DateTimeFormat("ru-RU", { weekday: "long", day: "numeric", month: "long" }).format(new Date(`${value}T12:00:00`)).replace(/^./, (letter) => letter.toUpperCase());
 
   function renderRideRow(ride, driver, icon = "↗") {
     return `<div class="ride-row ${driver.color === "violet" ? "mirlan" : ""}">
@@ -55,13 +57,41 @@
         <p class="text-small" style="margin:16px 0 0">Чтобы изменить поездку, сообщите данные сотруднику EGGHEADS.</p>`;
     }
 
-    if (plannedList) plannedList.innerHTML = rides.sort((a, b) => a.start.localeCompare(b.start)).map((ride) => renderRideRow(ride, drivers[ride.driverId], ride.status === "completed" ? "✓" : ride.status === "planned" ? "◷" : "↗")).join("");
     if (historyGrid) {
       historyGrid.innerHTML = rides.sort((a, b) => a.start.localeCompare(b.start)).map((ride) => `<div class="history-item"><span class="time">${ride.start}–${ride.end}</span><strong>${escapeHtml(ride.title)}</strong><span class="driver-line">${driverDot(drivers[ride.driverId])}${escapeHtml(drivers[ride.driverId].name)} · ${statusLabels[ride.status]}</span></div>`).join("");
     }
 
     renderTimeline(rides, drivers);
     renderTasks(data.tasks, dashboardDate, drivers);
+    renderPlanControls(data, drivers, dashboardDate);
+  }
+
+  function renderPlanControls(data, drivers, initialDate) {
+    const picker = document.getElementById("planDate");
+    const list = document.getElementById("plannedList");
+    const summary = document.getElementById("plannerSummary");
+    if (!picker || !list) return;
+    picker.value = picker.value || initialDate;
+    const renderForDate = (date) => {
+      const selectedRides = data.rides.filter((ride) => ride.date === date).sort((a, b) => a.start.localeCompare(b.start));
+      const plannedRides = selectedRides.filter((ride) => ride.status === "planned");
+      if (summary) summary.textContent = `${formatDate(date)} · ${selectedRides.length} поезд${selectedRides.length === 1 ? "ка" : selectedRides.length < 5 ? "ки" : "ок"}`;
+      list.innerHTML = selectedRides.length
+        ? selectedRides.map((ride) => renderRideRow(ride, drivers[ride.driverId], ride.status === "completed" ? "✓" : ride.status === "planned" ? "◷" : "↗")).join("")
+        : `<div class="planner-empty">На ${formatDate(date).toLowerCase()} поездок нет.</div>`;
+      if (summary && plannedRides.length && selectedRides.length !== plannedRides.length) summary.textContent += ` · запланировано: ${plannedRides.length}`;
+    };
+    if (!picker.dataset.bound) {
+      picker.dataset.bound = "true";
+      picker.addEventListener("change", () => renderForDate(picker.value));
+      document.getElementById("prevPlanDate")?.addEventListener("click", () => {
+        const date = new Date(`${picker.value}T12:00:00`); date.setDate(date.getDate() - 1); picker.value = isoDate(date); renderForDate(picker.value);
+      });
+      document.getElementById("nextPlanDate")?.addEventListener("click", () => {
+        const date = new Date(`${picker.value}T12:00:00`); date.setDate(date.getDate() + 1); picker.value = isoDate(date); renderForDate(picker.value);
+      });
+    }
+    renderForDate(picker.value);
   }
 
   function renderTimeline(rides, drivers) {
